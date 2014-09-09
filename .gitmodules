@@ -1,3 +1,0 @@
-[submodule "tools/proto"]
-	path = tools/proto
-	url = https://github.com/MindSpy/mindspy-proto.git
