@@ -1,0 +1,46 @@
+
+option java_package = "org.mindspy.protobufs";
+option java_outer_classname = "Regs";
+
+message Request {
+  enum Action {
+    ECHO = 0;
+    GET_STATE = 2; // RREG
+    SET_STATE = 3; // WREG
+    SAMPLES = 1; // RDATA
+    TEST = 4; // comprehensive
+    LED = 5; // blink the LED
+    STIMULATE = 6; // trancranial stimulator
+  }
+  required Action action = 1;
+  required uint64 timestamp = 2;
+  required uint32 reqid = 7;
+  optional bool stream = 6 [default = false];
+  optional uint32 start = 3;
+  optional uint32 count = 4;
+  optional bytes payload = 5; // arbitrary payload interpreted by the action handler
+}
+
+message State {
+  required uint32 address = 1;
+  required uint32 payload = 2;
+}
+
+message Sample {
+  required uint64 sequence = 1;
+  repeated int32 payload = 2;
+}
+
+message Response {
+  enum ErrNo {
+    NO_ERROR = 0;
+    HANDLER_MISSING = 1;
+    HANDLER_FAILED = 2;
+  }
+  optional ErrNo error = 1 [default = NO_ERROR];
+  optional string error_msg =2;
+  required uint64 timestamp = 3;
+  required uint32 reqid = 6;
+  repeated State state = 4;
+  repeated Sample sample = 5;
+}
