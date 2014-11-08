@@ -1,14 +1,15 @@
 
+.PHONY: clean
 
-.PHONY: tools clean Regs.java
-
-all: clean tools Regs.java
+all: proto
 
 clean:
-	rm src/main/java/org/mindspy/protobufs/Regs.java  || true
+	rm src/main/java/org/mindspy/protobufs/Proto.java || true
 
-tools:
-	$(MAKE) -C $@
+proto: src/main/java/org/mindspy/protobufs/Proto.java
 
-Regs.java:
-	mv tools/proto/Regs.java src/main/java/org/mindspy/protobufs/
+src/main/java/org/mindspy/protobufs/Proto.java: lib/proto/mindspy.proto lib/proto/mindspy.options
+	$(MAKE) -C lib/proto Proto.java
+	mv lib/proto/Proto.java src/main/java/org/mindspy/protobufs/
+
+
